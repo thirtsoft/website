@@ -2,23 +2,28 @@ package com.website.security.service;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.website.dtos.UtilisateurPostDto;
+import com.website.models.Utilisateur;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class UserPrinciple /*implements UserDetails */{
+public class UserPrinciple implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 
-  /*  private final Long id;
+    private final Long id;
 
     private final String username;
 
     private final String email;
 
     @JsonIgnore
-    private final String password;*/
-/*
+    private final String password;
+
     private final Collection<? extends GrantedAuthority> authorities;
 
     public UserPrinciple(Long id, String username, String email, String password,
@@ -30,7 +35,7 @@ public class UserPrinciple /*implements UserDetails */{
         this.authorities = authorities;
     }
 
-    public static UserPrinciple build(UtilisateurPostDto utilisateurPostDto) {
+    public static UserPrinciple build(Utilisateur utilisateurPostDto) {
         List<GrantedAuthority> authorities = utilisateurPostDto.getRoles()
                 .stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))
@@ -86,5 +91,5 @@ public class UserPrinciple /*implements UserDetails */{
     @Override
     public boolean isEnabled() {
         return false;
-    }*/
+    }
 }

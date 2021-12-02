@@ -41,6 +41,16 @@ public interface DemandeApi {
     ResponseEntity<?> createDemandeWithFile(@RequestPart(name = "demande") String demande,
                                             @RequestParam(name = "file") MultipartFile fileDemande) throws IOException;
 
+    @PostMapping(value = APP_ROOT + "/demandes/createDemandeWithFileInPath")
+    @ApiOperation(value = "Enregistrer une demande",
+            notes = "Cette méthode permet d'enregistrer une demande", response = DemandeDto.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "La Demande a été crée / modifié"),
+            @ApiResponse(code = 400, message = "Aucune Demande  crée / modifié")
+    })
+    ResponseEntity<?> createDemandeWithFileInPath(@RequestPart(name = "demande") String demande,
+                                            @RequestParam(name = "file") MultipartFile fileDemande) throws IOException;
+
     @PutMapping(value = APP_ROOT + "/demandes/update/{Id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Modifier une demande par son ID",
             notes = "Cette méthode permet de modifier une demande par son ID", response = DemandeDto.class)
@@ -243,5 +253,14 @@ public interface DemandeApi {
             @ApiResponse(code = 200, message = "Le Demande a été télécharger")
     })
     void downloadDemandeFile(HttpServletRequest request, HttpServletResponse response,
+                             @PathVariable("fileName") String fileName) throws IOException;
+
+    @RequestMapping(value = APP_ROOT + "/demandes/downloadDemandeFileFromPath/{fileName:.+}")
+    @ApiOperation(value = "Télécharger un Demande par son ID",
+            notes = "Cette méthode permet de télécharger un Demande par son ID", response = DemandeDto.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Le Demande a été télécharger")
+    })
+    void downloadDemandeFileFromPath(HttpServletRequest request, HttpServletResponse response,
                              @PathVariable("fileName") String fileName) throws IOException;
 }

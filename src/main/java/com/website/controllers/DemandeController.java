@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.service.ResponseMessage;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -35,6 +36,9 @@ public class DemandeController implements DemandeApi {
     private final String EXTERNAL_FILE_PATH = "C://Users//Folio9470m//website//Demande//";
 
     private final DemandeService demandeService;
+
+    @Autowired
+    ServletContext context;
 
     @Autowired
     public DemandeController(DemandeService demandeService) {
@@ -69,6 +73,23 @@ public class DemandeController implements DemandeApi {
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Demande is created");
     }
+
+    @Override
+    public ResponseEntity<?> createDemandeWithFileInPath(String demande, MultipartFile fileDemande) throws IOException {
+        DemandeDto demandeDto = new ObjectMapper().readValue(demande, DemandeDto.class);
+        if (fileDemande != null && !fileDemande.isEmpty()) {
+            demandeDto.setBaseDeDonnee(fileDemande.getOriginalFilename());
+            fileDemande.transferTo(new File(context.getRealPath("/Fichiers/") + fileDemande.getOriginalFilename()));
+        }
+
+        demandeDto.setNumero("DEMAND " + Math.random());
+        demandeDto.setStatus("ENCOURS");
+        demandeDto.setCreatedDate(new Date());
+        demandeService.save(demandeDto);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("Demande is created");
+    }
+
 
     @Override
     public ResponseEntity<DemandeDto> updateDemande(Long Id, DemandeDto demandeDto) {
@@ -209,5 +230,23 @@ public class DemandeController implements DemandeApi {
             FileCopyUtils.copy(inputStream, response.getOutputStream());
         }
     }
+
+    @Override
+    public void downloadDemandeFileFromPath(HttpServletRequest request, HttpServletResponse response, String fileName) throws IOException {
+        File file = new File(Paths.get(context.getRealPath("/Fichiers/")) + fileName);
+        if (file.exists()) {
+            String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+            if (mimeType == null) {
+                mimeType = "application/octet-stream";
+            }
+            response.setContentType(mimeType);
+            response.setHeader("Content-Disposition", String.format("attachment; filename=\"" + file.getName() + "\""));
+            response.setContentLength((int) file.length());
+            InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+
+            FileCopyUtils.copy(inputStream, response.getOutputStream());
+        }
+    }
+
 
 }
