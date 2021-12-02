@@ -234,6 +234,13 @@ public class DemandeServiceImpl implements DemandeService {
     }
 
     @Override
+    public List<?> sumTotalOfDemandeByMonth() {
+        return demandeRepository.sumTotalOfDemandeByMonth()
+                .stream()
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public void delete(Long id) {
         if (id == null) {
             return;

@@ -49,7 +49,7 @@ public interface DemandeApi {
             @ApiResponse(code = 400, message = "Aucune Demande  crée / modifié")
     })
     ResponseEntity<?> createDemandeWithFileInPath(@RequestPart(name = "demande") String demande,
-                                            @RequestParam(name = "file") MultipartFile fileDemande) throws IOException;
+                                                  @RequestParam(name = "file") MultipartFile fileDemande) throws IOException;
 
     @PutMapping(value = APP_ROOT + "/demandes/update/{Id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Modifier une demande par son ID",
@@ -193,6 +193,14 @@ public interface DemandeApi {
     })
     List<?> countNumberTotalOfDemandeByYear();
 
+    @GetMapping(value = APP_ROOT + "/demandes/sumOfDemandeByMonth", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Renvoi la liste du montant de Demande par moi",
+            notes = "Cette méthode permet de chercher et renvoyer la liste du montant de Demande par moi", responseContainer = "List<DemandeDto>")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "La liste du montant de Demande par moi / une liste vide")
+    })
+    List<?> getSumOfDemandeByMonth();
+
     @PatchMapping(value = APP_ROOT + "/demandes/updateStatusOfDemande/{id}")
     @ApiOperation(value = "Modifier le status d'une demande",
             notes = "Cette méthode permet de modifier le status d'une demande", response = DemandeDto.class)
@@ -262,5 +270,5 @@ public interface DemandeApi {
             @ApiResponse(code = 200, message = "Le Demande a été télécharger")
     })
     void downloadDemandeFileFromPath(HttpServletRequest request, HttpServletResponse response,
-                             @PathVariable("fileName") String fileName) throws IOException;
+                                     @PathVariable("fileName") String fileName) throws IOException;
 }

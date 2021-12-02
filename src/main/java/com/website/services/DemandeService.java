@@ -49,5 +49,7 @@ public interface DemandeService {
 
     List<?> countNumberTotalOfDemandeByYear();
 
+    List<?> sumTotalOfDemandeByMonth();
+
     void delete(Long id);
 }

@@ -48,5 +48,8 @@ public interface DemandeRepository extends JpaRepository<Demande, Long> {
     @Query("select EXTRACT(year from(v.createdDate)), count(v) from Demande v group by EXTRACT(year from(v.createdDate))")
     List<?> countNumberOfDemandeByYear();
 
+    @Query("select EXTRACT(month from(c.createdDate)), sum(c.price) from Demande c group by EXTRACT(month from(c.createdDate))")
+    List<?> sumTotalOfDemandeByMonth();
+
 
 }

@@ -176,6 +176,11 @@ public class DemandeController implements DemandeApi {
     }
 
     @Override
+    public List<?> getSumOfDemandeByMonth() {
+        return demandeService.sumTotalOfDemandeByMonth();
+    }
+
+    @Override
     public ResponseEntity<DemandeDto> updateStatusOfDemandeByID(String status, String id) {
         DemandeDto newDemandeDto = demandeService.updateStatusOfDemandeDtoById(status, id);
         return new ResponseEntity<>(newDemandeDto, HttpStatus.OK);
