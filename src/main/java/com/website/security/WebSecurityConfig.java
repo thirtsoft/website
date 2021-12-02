@@ -109,7 +109,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**/services/all").permitAll()
                 .antMatchers("/**/services/allServicesOrderDesc").permitAll()
                 .antMatchers("/**/services/delete/{id}").permitAll()
-          
+
 
                 .anyRequest().authenticated();
 
