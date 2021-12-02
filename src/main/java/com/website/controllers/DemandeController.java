@@ -233,7 +233,7 @@ public class DemandeController implements DemandeApi {
 
     @Override
     public void downloadDemandeFileFromPath(HttpServletRequest request, HttpServletResponse response, String fileName) throws IOException {
-        File file = new File(Paths.get(context.getRealPath("/Fichiers/")) + fileName);
+        File file = new File(context.getRealPath("/Fichiers/") + fileName);
         if (file.exists()) {
             String mimeType = URLConnection.guessContentTypeFromName(file.getName());
             if (mimeType == null) {
