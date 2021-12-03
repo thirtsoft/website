@@ -1,22 +1,25 @@
 package com.website.controllers;
 
 import com.website.controllers.api.AuthApi;
-import com.website.dtos.UtilisateurPostDto;
 import com.website.enums.RoleName;
 import com.website.message.request.LoginForm;
 import com.website.message.request.SignUpForm;
 import com.website.message.response.JwtResponse;
 import com.website.message.response.ResponseMessage;
 import com.website.models.Role;
+import com.website.models.Utilisateur;
 import com.website.repository.RoleRepository;
 import com.website.repository.UtilisateurRepository;
 import com.website.security.jwt.JwtProvider;
 import com.website.security.service.UserPrinciple;
-import com.website.services.UtilisateurPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,24 +30,21 @@ import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
-public class AuthController /*implements AuthApi */{
+public class AuthController implements AuthApi {
 
-   /* AuthenticationManager authenticationManager;
+    AuthenticationManager authenticationManager;
 
     UtilisateurRepository userRepository;
-
-    UtilisateurPostService utilisateurPostService;
 
     RoleRepository roleRepository;
 
     PasswordEncoder encoder;
 
-    JwtProvider jwtProvider;*/
+    JwtProvider jwtProvider;
 
-   /* @Autowired
+    @Autowired
     public AuthController(AuthenticationManager authenticationManager,
                           UtilisateurRepository userRepository,
-                          UtilisateurPostService utilisateurPostService,
                           RoleRepository roleRepository,
                           PasswordEncoder encoder, JwtProvider jwtProvider) {
         this.authenticationManager = authenticationManager;
@@ -53,8 +53,8 @@ public class AuthController /*implements AuthApi */{
         this.encoder = encoder;
         this.jwtProvider = jwtProvider;
     }
-*/
-  /*  @Override
+
+    @Override
     public ResponseEntity<?> authenticateUser(LoginForm loginForm) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginForm.getUsername(), loginForm.getPassword()));
@@ -75,8 +75,8 @@ public class AuthController /*implements AuthApi */{
                 userDetails.getEmail(),
                 roles));
     }
-*/
-   /* @Override
+
+    @Override
     public ResponseEntity<?> signUp(SignUpForm signUpForm) {
         if (userRepository.existsByUsername(signUpForm.getUsername())) {
             return new ResponseEntity<>(new ResponseMessage("Fail -> Username is already taken!"),
@@ -85,14 +85,18 @@ public class AuthController /*implements AuthApi */{
 
         if (userRepository.existsByEmail(signUpForm.getEmail())) {
             return new ResponseEntity<>(new ResponseMessage("Fail -> Email is already in use!"),
-                   HttpStatus.BAD_REQUEST);
-        } */
+                    HttpStatus.BAD_REQUEST);
+        }
 
         // Creating user's account
-       /* UtilisateurPostDto user = new UtilisateurPostDto(
+
+        Utilisateur utilisateur = new Utilisateur(
+                signUpForm.getName(),
                 signUpForm.getUsername(),
                 signUpForm.getEmail(),
-                encoder.encode(signUpForm.getPassword()));
+                encoder.encode(signUpForm.getPassword()
+                )
+        );
 
 
         String[] roleArr = signUpForm.getRoles();
@@ -125,12 +129,12 @@ public class AuthController /*implements AuthApi */{
             }
         }
 
-        user.setRoles(roles);
+        utilisateur.setRoles(roles);
 
-        utilisateurPostService.save(user);
+        userRepository.save(utilisateur);
 
         return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.CREATED);
 
-    }*/
+    }
 
 }

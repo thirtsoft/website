@@ -12,13 +12,11 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> 
 
     Optional<Utilisateur> findByUsername(String username);
 
-    Optional<Utilisateur> findByUsernameOrEmail(String username, String email);
-
     Optional<Utilisateur> findByEmail(String email);
 
-    boolean existsByUsername(String username);
+    Boolean existsByUsername(String username);
 
-    boolean existsByEmail(String email);
+    Boolean existsByEmail(String email);
 
     List<Utilisateur> findByOrderByIdDesc();
 

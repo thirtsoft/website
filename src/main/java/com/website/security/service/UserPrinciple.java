@@ -1,7 +1,6 @@
 package com.website.security.service;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.website.dtos.UtilisateurPostDto;
 import com.website.models.Utilisateur;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class UserPrinciple implements UserDetails {
@@ -35,17 +35,17 @@ public class UserPrinciple implements UserDetails {
         this.authorities = authorities;
     }
 
-    public static UserPrinciple build(Utilisateur utilisateurPostDto) {
-        List<GrantedAuthority> authorities = utilisateurPostDto.getRoles()
+    public static UserPrinciple build(Utilisateur utilisateur) {
+        List<GrantedAuthority> authorities = utilisateur.getRoles()
                 .stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList());
 
         return new UserPrinciple(
-                utilisateurPostDto.getId(),
-                utilisateurPostDto.getUsername(),
-                utilisateurPostDto.getEmail(),
-                utilisateurPostDto.getPassword(),
+                utilisateur.getId(),
+                utilisateur.getUsername(),
+                utilisateur.getEmail(),
+                utilisateur.getPassword(),
                 authorities
         );
     }
@@ -59,37 +59,47 @@ public class UserPrinciple implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+    public String getUsername() {
+        return username;
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return password;
     }
 
     @Override
-    public String getUsername() {
-        return null;
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserPrinciple user = (UserPrinciple) o;
+        return Objects.equals(id, user.id);
+    }
+
 }

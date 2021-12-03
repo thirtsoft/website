@@ -63,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             public void addCorsMappings(CorsRegistry registry) {
                 //        registry.addMapping("/**").allowedOrigins("http://localhost:4200");
                 registry.addMapping("/**").allowedOrigins("http://localhost:5000");
-            //    registry.addMapping("/**").allowedOrigins("https://medic-website.herokuapp.com");
+                //    registry.addMapping("/**").allowedOrigins("https://medic-website.herokuapp.com");
 
             }
         };
@@ -112,6 +112,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**/services/all").permitAll()
                 .antMatchers("/**/services/allServicesOrderDesc").permitAll()
                 .antMatchers("/**/services/delete/{id}").permitAll()
+
+                .antMatchers("/**/utilisateurs/all").permitAll()
+                .antMatchers("/**/utilisateurs/findById/{idUtilisateur}").permitAll()
+                .antMatchers("/**/utilisateurs/update/{idUser}").permitAll()
+                .antMatchers("/**/utilisateurs/avatar/{id}").permitAll()
+                .antMatchers("/**/utilisateurs/uploadUserPhoto/{id}").permitAll()
+                .antMatchers("/**/utilisateurs/*").permitAll()
+                .antMatchers("/**/utilisateurs/updateCustomerProfileByUsername").permitAll()
 
 
                 .anyRequest().authenticated();

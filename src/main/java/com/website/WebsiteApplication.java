@@ -1,19 +1,22 @@
 package com.website;
 
 import com.website.enums.RoleName;
-import com.website.enums.StatusDemande;
 import com.website.models.Demande;
 import com.website.models.Role;
 import com.website.models.Service;
+import com.website.models.Utilisateur;
 import com.website.repository.DemandeRepository;
 import com.website.repository.RoleRepository;
 import com.website.repository.ServiceRepository;
+import com.website.repository.UtilisateurRepository;
+import com.website.services.UtilisateurService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,17 +29,27 @@ public class WebsiteApplication implements CommandLineRunner {
 
     private static final Logger LOG = LoggerFactory.getLogger(WebsiteApplication.class);
 
+    private final UtilisateurRepository utilisateurRepository;
     private final ServiceRepository serviceRepository;
     private final DemandeRepository demandeRepository;
     private final RoleRepository roleRepository;
+    private final UtilisateurService utilisateurService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     @Autowired
     public WebsiteApplication(ServiceRepository serviceRepository,
                               DemandeRepository demandeRepository,
-                              RoleRepository roleRepository) {
+                              RoleRepository roleRepository,
+                              UtilisateurService utilisateurService,
+                              UtilisateurRepository utilisateurRepository) {
         this.serviceRepository = serviceRepository;
         this.demandeRepository = demandeRepository;
         this.roleRepository = roleRepository;
+        this.utilisateurService = utilisateurService;
+        this.utilisateurRepository = utilisateurRepository;
     }
 
     public static void main(String[] args) {
@@ -67,7 +80,7 @@ public class WebsiteApplication implements CommandLineRunner {
                 "de gestion des données médicales", new Date()));
         Service s4 = serviceRepository.save(new Service(4L, "Vent", "Vente", "vente de matériels informatiques et médicales, multiService);\n" +
                 "Mise en forme et impressions de documents", new Date()));
-      //  Service s5 = serviceRepository.save(new Service(5L, "Mat", "Chirurgie", "Chirurgie", new Date()));
+        //  Service s5 = serviceRepository.save(new Service(5L, "Mat", "Chirurgie", "Chirurgie", new Date()));
 
         Demande d1 = demandeRepository.save(new Demande(1L, "D1", "D1", "D1", "D1", "D1", "D1", "D1", "ENCOURS", new Date()));
         Demande d2 = demandeRepository.save(new Demande(2L, "D2", "D2", "D2", "D2", "D2", "D2", "D2", "VALIDER", new Date()));
@@ -86,5 +99,22 @@ public class WebsiteApplication implements CommandLineRunner {
         Role gest = roleRepository.save(new Role(2L, RoleName.GESTIONNAIRE));
         Role manager = roleRepository.save(new Role(3L, RoleName.MANAGER));
         Role admin = roleRepository.save(new Role(4L, RoleName.ADMIN));
+
+
+        Utilisateur managerSIM = new Utilisateur();
+        managerSIM.setId(2L);
+        managerSIM.setUsername("Manager");
+        managerSIM.setName("Manager");
+        managerSIM.setPassword("manager1234");
+        Utilisateur adminUser = new Utilisateur();
+        adminUser.setId(3L);
+        adminUser.setUsername("Admin");
+        adminUser.setName("Admin");
+        adminUser.setPassword(passwordEncoder.encode("admin1234"));
+        utilisateurRepository.save(managerSIM);
+        utilisateurRepository.save(adminUser);
+
+        utilisateurService.addRoleToUser("Admin", RoleName.ADMIN);
+        utilisateurService.addRoleToUser("Manager", RoleName.MANAGER);
     }
 }

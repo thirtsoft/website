@@ -2,7 +2,6 @@ package com.website.security.service;
 
 import com.website.models.Utilisateur;
 import com.website.repository.UtilisateurRepository;
-import com.website.services.UtilisateurPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,9 +14,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     UtilisateurRepository userRepository;
-
-    @Autowired
-    private UtilisateurPostService utilisateurPostService;
 
     @Override
     @Transactional
