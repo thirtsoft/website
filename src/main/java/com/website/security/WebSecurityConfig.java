@@ -120,6 +120,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**/utilisateurs/uploadUserPhoto/{id}").permitAll()
                 .antMatchers("/**/utilisateurs/*").permitAll()
                 .antMatchers("/**/utilisateurs/updateCustomerProfileByUsername").permitAll()
+                .antMatchers("/**/utilisateurs/delete/{idUtilisateur}").permitAll()
+
+                .antMatchers("/**/emails/sendEmailToManager").permitAll()
+                .antMatchers("/**/emails/sendEmailToCustomer").permitAll()
+                .antMatchers("/**/emails/findById/{id}").permitAll()
+                .antMatchers("/**/emails/allEmailsOrderDesc").permitAll()
+                .antMatchers("/**/emails/all").permitAll()
+                .antMatchers("/**/emails/countNumberOfMailInMonth").permitAll()
+                .antMatchers("/**/emails/delete/{id}").permitAll()
+
 
 
                 .anyRequest().authenticated();

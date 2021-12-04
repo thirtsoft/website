@@ -17,7 +17,11 @@ public class EmailDto {
 
     private Long id;
 
-    private String receiver;
+    private String customerName;
+
+    private String customerEmail;
+
+    private String recipient;
 
     private String subject;
 
@@ -34,7 +38,9 @@ public class EmailDto {
 
         return EmailDto.builder()
                 .id(email.getId())
-                .receiver(email.getReceiver())
+                .customerName(email.getCustomerName())
+                .customerEmail(email.getCustomerEmail())
+                .recipient(email.getRecipient())
                 .subject(email.getSubject())
                 .message(email.getMessage())
                 .createDate(email.getCreateDate())
@@ -49,7 +55,9 @@ public class EmailDto {
 
         Email email = new Email();
         email.setId(emailDto.getId());
-        email.setReceiver(emailDto.getReceiver());
+        email.setCustomerName(emailDto.getCustomerName());
+        email.setCustomerEmail(emailDto.getCustomerEmail());
+        email.setRecipient(emailDto.getRecipient());
         email.setSubject(emailDto.getSubject());
         email.setMessage(emailDto.getMessage());
         email.setCreateDate(emailDto.getCreateDate());

@@ -25,10 +25,6 @@ import java.util.stream.Collectors;
 @Transactional
 public class EmailServiceImpl implements EmailService {
 
-    private static final String from = "thirdiallo@gmail.com";
-
-    private static final String to = "thirdiallo@gmail.com";
-
     private final EmailRepository emailRepository;
 
     private final DemandeService demandeService;
@@ -49,19 +45,19 @@ public class EmailServiceImpl implements EmailService {
         boolean f = false;
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Nom : " + emailDto.getReceiver()).append(System.lineSeparator());
+        sb.append("Nom : " + emailDto.getRecipient()).append(System.lineSeparator());
         sb.append("\n Subject : " + emailDto.getSubject());
         sb.append("\n Message : " + emailDto.getMessage());
 
         SimpleMailMessage mail = new SimpleMailMessage();
 
-        //    mail.setTo(to);
         mail.setTo(ConstantsMail.to);
-        mail.setFrom(emailDto.getReceiver());
+        mail.setFrom(emailDto.getCustomerEmail());
         mail.setSubject(emailDto.getSubject());
         mail.setText(emailDto.getMessage());
 
         emailDto.setCreateDate(new Date());
+        emailDto.setCustomerName(emailDto.getCustomerName());
 
         System.out.println(emailDto);
 
@@ -81,7 +77,6 @@ public class EmailServiceImpl implements EmailService {
         SimpleMailMessage mail = new SimpleMailMessage();
 
         mail.setTo(demandeDto.getEmail());
-        //    mail.setFrom(from);
         mail.setFrom(ConstantsMail.from);
         mail.setSubject(demandeDto.getSubject());
         mail.setText(demandeDto.getMessage());

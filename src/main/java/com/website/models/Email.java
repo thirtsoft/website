@@ -15,8 +15,14 @@ public class Email extends AbstractEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "receiver")
-    private String receiver;
+    @Column(name = "customerName")
+    private String customerName;
+
+    @Column(name = "customerEmail")
+    private String customerEmail;
+
+    @Column(name = "recipient")
+    private String recipient;
 
     @Column(name = "subject")
     private String subject;
@@ -30,18 +36,46 @@ public class Email extends AbstractEntity {
     @ManyToOne
     private Demande demande;
 
-    public Email(String receiver, String subject, String message) {
-        this.receiver = this.demande.getEmail();
+    public Email(String recipient, String subject, String message) {
+        this.recipient = this.demande.getEmail();
         this.subject = subject;
         this.message = message;
+    }
+
+    public Email(String customerName, String recipient, String subject, String message) {
+        this.customerName = customerName;
+        this.recipient = recipient;
+        this.subject = subject;
+        this.message = message;
+        this.createDate = new Date();
     }
 
     public Email() {
 
     }
 
-    public String getReceiver() {
-        return receiver;
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+    }
+
+    public String getRecipient() {
+        return recipient;
+    }
+
+    public void setRecipient(String recipient) {
+        this.recipient = recipient;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
     public Demande getDemande() {
@@ -55,7 +89,6 @@ public class Email extends AbstractEntity {
     public String getName() {
         return name;
     }
-
 
     public String getFrom() {
         return from;
@@ -85,10 +118,6 @@ public class Email extends AbstractEntity {
         this.id = id;
     }
 
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
-    }
-
     public Date getCreateDate() {
         return createDate;
     }
@@ -100,7 +129,8 @@ public class Email extends AbstractEntity {
     @Override
     public String toString() {
         return "Email{" +
-                "recever='" + receiver + '\'' +
+                "customerName='" + customerName + '\'' +
+                "recipient='" + recipient + '\'' +
                 ", subject='" + subject + '\'' +
                 ", message='" + message + '\'' +
                 '}';
