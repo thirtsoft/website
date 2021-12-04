@@ -62,8 +62,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 //        registry.addMapping("/**").allowedOrigins("http://localhost:4200");
-                registry.addMapping("/**").allowedOrigins("http://localhost:5000");
-                //    registry.addMapping("/**").allowedOrigins("https://medic-website.herokuapp.com");
+                // registry.addMapping("/**").allowedOrigins("http://localhost:5000");
+                    registry.addMapping("/**").allowedOrigins("https://medic-website.herokuapp.com");
 
             }
         };
